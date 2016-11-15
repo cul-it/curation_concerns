@@ -68,6 +68,20 @@ describe CurationConcerns::GenericWorksController do
       end
     end
 
+    context 'when I am an anonymous user and a work is inactive in its workflow state' do
+      let(:work) { create(:public_generic_work) }
+      let(:user) { nil }
+      before do
+        allow(work).to receive(:suppressed?).and_return(true)
+      end
+
+      it 'shows the unauthorized message' do
+        get :show, params: { id: work }
+        expect(response.code).to eq '401'
+        expect(response).to render_template(:unauthorized)
+      end
+    end
+
     context 'when a ObjectNotFoundError is raised' do
       it 'returns 404 page' do
         allow(controller).to receive(:show).and_raise(ActiveFedora::ObjectNotFoundError)

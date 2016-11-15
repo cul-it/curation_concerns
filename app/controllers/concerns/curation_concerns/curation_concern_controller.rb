@@ -194,11 +194,17 @@ module CurationConcerns
       def search_result_document(search_params)
         _, document_list = search_results(search_params)
         raise CanCan::AccessDenied.new(nil, :show) if document_list.empty?
-        if current_user.blank? && document_list.present? && document_list.first["suppressed_bsi"]
-          flash[:alert] = I18n.t("curation_concerns.workflow.generic_work.unauthorized")
+        if document_suppressed?(document_list)
+          flash[:notice] = I18n.t("curation_concerns.workflow.default.unauthorized")
           raise CanCan::AccessDenied.new(nil, :show)
         end
         document_list.first
+      end
+
+      def document_suppressed?(document_list)
+        unless current_user
+          document_list.present? && document_list.first["suppressed_bsi"]
+        end
       end
   end
 end
