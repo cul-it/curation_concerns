@@ -40,6 +40,5 @@ module CurationConcerns
     def suppressed_field
       @suppressed_field ||= Solrizer.solr_name('suppressed', STORED_BOOL)
     end
-
   end
 end

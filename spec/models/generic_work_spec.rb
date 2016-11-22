@@ -48,6 +48,25 @@ describe GenericWork do
     end
   end
 
+  context "when activating or deactivating a work" do
+    let(:work) { described_class.new }
+    describe "#activate" do
+      subject { work.activate }
+      it "sets its state to active" do
+        subject
+        expect(work.suppressed?).to be false
+      end
+    end
+
+    describe "#deactivate" do
+      subject { work.deactivate }
+      it "sets its state to inactive" do
+        subject
+        expect(work.suppressed?).to be true
+      end
+    end
+  end
+
   describe '.valid_child_concerns' do
     it "is all registered curation concerns by default" do
       expect(described_class.valid_child_concerns).to eq [described_class]

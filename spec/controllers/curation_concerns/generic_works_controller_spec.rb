@@ -69,6 +69,7 @@ describe CurationConcerns::GenericWorksController do
     end
 
     context 'when a ObjectNotFoundError is raised' do
+      let(:work) {}
       it 'returns 404 page' do
         allow(controller).to receive(:show).and_raise(ActiveFedora::ObjectNotFoundError)
         expect(controller).to receive(:render_404) { controller.render body: nil }
@@ -193,7 +194,6 @@ describe CurationConcerns::GenericWorksController do
 
       context 'when there are children' do
         let(:work) { create(:work_with_one_file, user: user) }
-
         it 'prompts to change the files access' do
           patch :update, params: { id: work, generic_work: {} }
           expect(response).to redirect_to main_app.confirm_curation_concerns_permission_path(controller.curation_concern)
@@ -287,6 +287,7 @@ describe CurationConcerns::GenericWorksController do
 
   describe '#file_manager' do
     let(:work) { create(:private_generic_work, user: user) }
+
     it "is successful" do
       get :file_manager, params: { id: work.id }
       expect(response).to be_success

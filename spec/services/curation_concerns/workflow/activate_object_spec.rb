@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe CurationConcerns::Workflow::ActivateObject do
-  let(:work) { instance_double(GenericWork) }
+  let(:work) { GenericWork.new }
   let(:user) { User.new }
 
   describe ".call" do
