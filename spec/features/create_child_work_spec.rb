@@ -3,7 +3,11 @@ require 'redlock'
 
 feature 'Creating a new child Work', :workflow do
   let(:user) { FactoryGirl.create(:user) }
-
+  let(:sipity_entity) do
+    create(:sipity_entity,
+           proxy_for_global_id: parent.to_global_id.to_s,
+           workflow_state_id: 2)
+  end
   let(:redlock_client_stub) { # stub out redis connection
     client = double('redlock client')
     allow(client).to receive(:lock).and_yield(true)
@@ -14,6 +18,7 @@ feature 'Creating a new child Work', :workflow do
 
   before do
     sign_in user
+    sipity_entity
 
     # stub out characterization. Travis doesn't have fits installed, and it's not relevant to the test.
     allow(CharacterizeJob).to receive(:perform_later)
@@ -35,7 +40,20 @@ feature 'Creating a new child Work', :workflow do
 
   context "when it's being updated" do
     let(:curation_concern) { FactoryGirl.create(:generic_work, user: user) }
+    let(:new_parent) { FactoryGirl.create(:generic_work, user: user) }
+    let(:cc_sipity_entity) do
+      create(:sipity_entity,
+             proxy_for_global_id: curation_concern.to_global_id.to_s,
+             workflow_state_id: 2)
+    end
+    let(:new_sipity_entity) do
+      create(:sipity_entity,
+             proxy_for_global_id: new_parent.to_global_id.to_s,
+             workflow_state_id: 2)
+    end
     before do
+      cc_sipity_entity
+      new_sipity_entity
       parent.ordered_members << curation_concern
       parent.save!
     end
@@ -46,7 +64,6 @@ feature 'Creating a new child Work', :workflow do
       expect(parent.reload.ordered_members.to_a.length).to eq 1
     end
     it "doesn't lose other memberships" do
-      new_parent = FactoryGirl.create(:generic_work, user: user)
       new_parent.ordered_members << curation_concern
       new_parent.save!
 

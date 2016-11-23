@@ -3,9 +3,15 @@ require 'spec_helper'
 feature 'Add an attached file' do
   let(:user) { create(:user) }
   let!(:work) { create(:work, user: user) }
+  let(:sipity_entity) do
+    create(:sipity_entity,
+           proxy_for_global_id: work.to_global_id.to_s,
+           workflow_state_id: 2)
+  end
 
   before do
     sign_in user
+    sipity_entity
     # stub out characterization. Travis doesn't have fits installed, and it's not relevant to the test.
     allow(CharacterizeJob).to receive(:perform_later)
     allow_any_instance_of(CurationConcerns::Actors::FileSetActor).to receive(:acquire_lock_for).and_yield

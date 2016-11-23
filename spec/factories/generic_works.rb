@@ -4,7 +4,7 @@ FactoryGirl.define do
   factory :generic_work, aliases: [:work, :private_generic_work], class: GenericWork do
     transient do
       user { FactoryGirl.create(:user) }
-      workflow_state { FactoryGirl.create(:workflow_state) }
+      # workflow_state { FactoryGirl.create(:workflow_state) }
     end
 
     title ['Test title']
@@ -14,9 +14,9 @@ FactoryGirl.define do
       work.apply_depositor_metadata(evaluator.user.user_key)
     end
 
-    after(:create) do |work, evaluator|
-      Sipity::Entity.create(proxy_for_global_id: work.to_global_id.to_s, workflow: evaluator.workflow_state.workflow, workflow_state: evaluator.workflow_state)
-    end
+    # after(:create) do |work, evaluator|
+    #   Sipity::Entity.create(proxy_for_global_id: work.to_global_id.to_s, workflow: evaluator.workflow_state.workflow, workflow_state: evaluator.workflow_state)
+    # end
 
     factory :public_generic_work, traits: [:public]
 
