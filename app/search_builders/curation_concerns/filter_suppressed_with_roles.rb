@@ -1,6 +1,8 @@
 module CurationConcerns
   module FilterSuppressedWithRoles
-    extend CurationConcerns::FilterSuppressed
+    extend ActiveSupport::Concern
+
+    include CurationConcerns::FilterSuppressed
 
     def only_active_works(solr_parameters)
       if current_work.respond_to?(:to_sipity_entity) # Used because Collections use WorkSearchBuilder to filter down to a single item

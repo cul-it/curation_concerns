@@ -8,14 +8,6 @@ module CurationConcerns
       property :state, predicate: Vocab::FedoraResourceStatus.objState, multiple: false
     end
 
-    def deactivate
-      self.state = Vocab::FedoraResourceStatus.inactive
-    end
-
-    def activate
-      self.state = Vocab::FedoraResourceStatus.active
-    end
-
     # Override this method if you have some criteria by which records should not
     # display in the search results.
     def suppressed?

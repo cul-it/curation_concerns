@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe CurationConcerns::Workflow::DeactivateObject do
-  let(:work) { instance_double(GenericWork) }
+  let(:work) { GenericWork.new }
   let(:user) { User.new }
 
   describe ".call" do
@@ -12,8 +12,8 @@ RSpec.describe CurationConcerns::Workflow::DeactivateObject do
     end
 
     it "makes it active" do
-      expect(work).to receive(:deactivate)
       subject
+      expect(work.state).to eq Vocab::FedoraResourceStatus.inactive
     end
   end
 end

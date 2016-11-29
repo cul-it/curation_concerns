@@ -6,7 +6,7 @@ module CurationConcerns
     # behavior included.
     class ActivateObject
       def self.call(target:, **)
-        target.activate
+        target.state = Vocab::FedoraResourceStatus.active
       end
     end
   end

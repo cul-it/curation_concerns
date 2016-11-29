@@ -55,9 +55,7 @@ describe CurationConcerns::WorkIndexer do
 
   context "the actionable workflow roles" do
     let(:sipity_entity) do
-      create(:sipity_entity,
-             proxy_for_global_id: work.to_global_id.to_s,
-             workflow_state_id: 2)
+      create(:sipity_entity, proxy_for_global_id: work.to_global_id.to_s)
     end
     before do
       sipity_entity

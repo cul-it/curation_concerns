@@ -4,9 +4,7 @@ require 'redlock'
 feature 'Creating a new child Work', :workflow do
   let(:user) { FactoryGirl.create(:user) }
   let(:sipity_entity) do
-    create(:sipity_entity,
-           proxy_for_global_id: parent.to_global_id.to_s,
-           workflow_state_id: 2)
+    create(:sipity_entity, proxy_for_global_id: parent.to_global_id.to_s)
   end
   let(:redlock_client_stub) { # stub out redis connection
     client = double('redlock client')
