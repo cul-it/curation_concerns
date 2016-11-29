@@ -5,7 +5,7 @@ require 'spec_helper'
 describe CurationConcerns::GenericWorksController do
   let(:user) { create(:user) }
   let(:work) { create(:generic_work, user: user) }
-  let(:sipity_entity) do
+  let!(:sipity_entity) do
     create(:sipity_entity, proxy_for_global_id: work.to_global_id.to_s)
   end
   before do
@@ -23,7 +23,7 @@ describe CurationConcerns::GenericWorksController do
 
       context "with a parent work" do
         let(:parent) { create(:generic_work, title: ['Parent Work'], user: user, ordered_members: [work]) }
-        let(:parent_sipity_entity) do
+        let!(:parent_sipity_entity) do
           create(:sipity_entity,
                  proxy_for_global_id: parent.to_global_id.to_s,
                  workflow_state_id: 2)

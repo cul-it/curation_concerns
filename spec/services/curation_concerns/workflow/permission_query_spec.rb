@@ -24,7 +24,7 @@ module CurationConcerns
                                workflow_state: PowerConverter.convert_to_sipity_workflow_state('initial', scope: sipity_workflow)
                               )
       end
-      let(:sipity_workflow) { Sipity::Workflow.where(name: 'testing').first }
+      let(:sipity_workflow) { Sipity::Workflow.first }
 
       def expect_actions_for(user:, entity:, actions:)
         actions = Array.wrap(actions).map { |action| PowerConverter.convert_to_sipity_action(action, scope: entity.workflow) }

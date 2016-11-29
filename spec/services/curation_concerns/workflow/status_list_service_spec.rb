@@ -4,7 +4,7 @@ RSpec.describe CurationConcerns::Workflow::StatusListService do
   describe "#each" do
     let(:user) { create(:user) }
     let(:service) { described_class.new(user) }
-    let(:sipity_entity) { instance_double(Sipity::Entity, workflow: workflow, workflow_state: workflow_state) }
+    let!(:sipity_entity) { instance_double(Sipity::Entity, workflow: workflow, workflow_state: workflow_state) }
     let(:document) { { id: '33333',
                        has_model_ssim: ['GenericWork'],
                        actionable_workflow_roles_ssim: ["generic_work-approving", "generic_work-rejecting"],
